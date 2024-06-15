@@ -1,0 +1,6 @@
+[package]
+name = "mongo_data_exporter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
