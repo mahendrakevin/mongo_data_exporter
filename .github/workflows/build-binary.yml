@@ -72,8 +72,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print bin contents
-        run: ls -l bin
+      - name: Print contents
+        run: ls -l
 
       - uses: actions/checkout@v2
       - name: Commit binaries
