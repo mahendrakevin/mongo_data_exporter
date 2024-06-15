@@ -64,3 +64,19 @@ jobs:
         with:
           name: binaries_mac
           path: bin/
+
+  commit_binaries:
+
+    needs: [build_linux_windows, build_mac]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Commit binaries
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add bin/*
+          git commit -m "Add binaries to bin folder" -a
+          git push
