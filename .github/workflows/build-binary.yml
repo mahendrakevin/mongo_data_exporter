@@ -1,0 +1,40 @@
+name: Rust
+
+on:
+  push:
+    branches: [ main, development ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Install cross
+      run: cargo install cross
+
+    - name: Build for Linux
+      run: cross build --target x86_64-unknown-linux-gnu --release --bin mongo_data_exporter
+    - name: Move Linux binary to bin
+      run: |
+        mkdir -p bin
+        mv target/x86_64-unknown-linux-gnu/release/mongo_data_exporter bin/mongo_data_exporter_linux
+
+    - name: Build for Windows
+      run: cross build --target x86_64-pc-windows-gnu --release --bin mongo_data_exporter
+    - name: Move Windows binary to bin
+      run: |
+        mv target/x86_64-pc-windows-gnu/release/mongo_data_exporter.exe bin/mongo_data_exporter_windows.exe
+
+    - name: Build for Mac
+      run: cross build --target x86_64-apple-darwin --release --bin mongo_data_exporter
+    - name: Move Mac binary to bin
+      run: |
+        mv target/x86_64-apple-darwin/release/mongo_data_exporter bin/mongo_data_exporter_mac
