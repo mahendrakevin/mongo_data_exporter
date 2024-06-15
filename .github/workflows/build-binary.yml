@@ -67,7 +67,7 @@ jobs:
 
   commit_binaries:
 
-    needs: [build_linux_windows, build_mac]
+    needs: [ build_linux_windows, build_mac ]
 
     runs-on: ubuntu-latest
 
@@ -77,6 +77,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bin/*
-          git commit -m "Add binaries to bin folder" -a
-          git push
+          if [ -d "bin" ] && [ "$(ls -A bin)" ]; then
+            git add bin/*
+            git commit -m "Add binaries to bin folder" -a
+            git push
+          else
+            echo "No binaries to commit"
+          fi
