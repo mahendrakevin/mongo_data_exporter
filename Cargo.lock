@@ -825,7 +825,6 @@ dependencies = [
  "async-trait",
  "chrono",
  "futures",
- "log",
  "mongodb",
  "tokio",
 ]

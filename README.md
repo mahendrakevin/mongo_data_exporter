@@ -19,3 +19,43 @@
 
   </p>
 </div>
+
+## Dependencies:
+
+```toml
+[dependencies]
+async-trait = "0.1.80"
+mongodb = { version = "2.8.2", features = ["bson-chrono-0_4"] }
+tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "macros"] }
+chrono = "0.4.38"
+futures = "0.3.30"
+```
+
+## Usage:
+
+```rust
+use mongo_data_exporter::export;
+use mongo_data_exporter::operations::{MongoDBConnection, Operation};
+
+#[tokio::main]
+async fn main() {
+    // Source database connection
+    let source_db_dr = MongoDBConnection::new("mongodb://reader:reader@103.145.195.62:27017/btnsmsgw", "btnsmsgw", "btn-dr").await;
+    
+    // Target database connection
+    let target_db_dr = MongoDBConnection::new("mongodb://192.168.180.125:27017", "btnsmsgw", "btn-dr").await;
+
+    // Create export operation, you can specify the batch size and the limit data to export
+    let mut export_dr = export::Export::init(source_db_dr, target_db_dr, 10000, None).await;
+    
+    // Start the export operation
+    export_dr.start_export().await;
+}
+```
+
+## License
+
+This project is licensed under either of the following licenses, at your option:
+
+- Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or [http://www.apache.org/licenses/LICENSE-2.0])
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or [http://opensource.org/licenses/MIT])
