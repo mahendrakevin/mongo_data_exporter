@@ -40,10 +40,10 @@ use mongo_data_exporter::operations::{MongoDBConnection, Operation};
 #[tokio::main]
 async fn main() {
     // Source database connection
-    let source_db_dr = MongoDBConnection::new("mongodb://reader:reader@103.145.195.62:27017/btnsmsgw", "btnsmsgw", "btn-dr").await;
+    let source_db_dr = MongoDBConnection::new("mongodb://localhost:27017/test", "test", "test-collection").await;
     
     // Target database connection
-    let target_db_dr = MongoDBConnection::new("mongodb://192.168.180.125:27017", "btnsmsgw", "btn-dr").await;
+    let target_db_dr = MongoDBConnection::new("mongodb://localhost2:27017/test", "test", "test-collection").await;
 
     // Create export operation, you can specify the batch size and the limit data to export
     let mut export_dr = export::Export::init(source_db_dr, target_db_dr, 10000, None).await;
