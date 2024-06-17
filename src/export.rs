@@ -12,6 +12,14 @@ pub struct Export<'a> {
 }
 
 impl<'a> Export<'a> {
+    /// Initialize the Export struct
+    /// # Arguments
+    /// * `source_db` - MongoDBConnection struct for the source database
+    /// * `target_db` - MongoDBConnection struct for the target database
+    /// * `batch_size` - The number of documents to insert in a batch
+    /// * `limit_backup` - The number of documents to backup
+    /// # Returns
+    /// * `Export` struct
     pub async fn init(
         source_db: MongoDBConnection<'a>,
         target_db: MongoDBConnection<'a>,
@@ -25,6 +33,26 @@ impl<'a> Export<'a> {
             limit_backup,
         }
     }
+
+    /// Start exporting data from source to target database
+    /// # Returns
+    /// * `i64` - The number of documents inserted
+    /// # Example
+    /// ```
+    /// use mongo_data_exporter::{operations::{MongoDBConnection, Operation}, export::Export};
+    ///
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     // Example
+    ///     let source_db =
+    ///         MongoDBConnection::new("mongodb://localhost/test", "test", "transactions").await;
+    ///     let target_db =
+    ///         MongoDBConnection::new("mongodb://localhost2/test", "test", "transactions").await;
+    ///     let mut export = Export::init(source_db, target_db, 1000, Some(1000)).await;
+    ///     let res = export.start_export().await;
+    ///     println!("Total data inserted: {:?}", res)
+    /// }
+    /// ```
     pub async fn start_export(&mut self) -> i64 {
         println!("Start exporting data from source to target database");
         let last_id = self.target_db.get_last_id().await;
