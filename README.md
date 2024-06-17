@@ -8,7 +8,7 @@
 <!-- prettier-ignore-start -->
 
 [![crates.io](https://img.shields.io/crates/v/mongo_data_exporter?label=latest)](https://crates.io/crates/mongo_data_exporter)
-[![Documentation](https://docs.rs/mongo_data_exporter/badge.svg?version=4.7.0)](https://docs.rs/mongo_data_exporter/0.1.0)
+[![Documentation](https://docs.rs/mongo_data_exporter/badge.svg?version=0.1.0)](https://docs.rs/mongo_data_exporter/0.1.0)
 ![MSRV](https://img.shields.io/badge/rustc-1.72+-ab6000.svg)
 <br />
 ![MIT or Apache 2.0 licensed](https://img.shields.io/crates/l/mongo_data_exporter.svg)
