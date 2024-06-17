@@ -2,6 +2,9 @@
 name = "mongo_data_exporter"
 version = "0.1.0"
 edition = "2021"
+authors = ["Kevin Indra Mahendra"]
+license = "MIT"
+repository = "https://github.com/mahendrakevin/mongo_data_exporter"
 
 [dependencies]
 async-trait = "0.1.80"
