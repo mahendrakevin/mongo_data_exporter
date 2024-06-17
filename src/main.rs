@@ -1,5 +1,5 @@
 use mongodb::bson;
-use mongo_data_exporter::{Connect, MongoDBConnection};
+use mongo_data_exporter::{MongoDBConnection, Operation};
 
 #[tokio::main]
 async fn main() {

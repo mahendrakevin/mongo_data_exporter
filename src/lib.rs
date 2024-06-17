@@ -1,7 +1,8 @@
-use mongodb::bson;
+use mongodb::bson::{doc, Document};
+use mongodb::bson::oid::ObjectId;
 use mongodb::results::InsertManyResult;
 
-pub struct BackupProperties<'a> {
+pub struct Export<'a> {
     pub source_db: MongoDBConnection<'a>,
     pub target_db: MongoDBConnection<'a>,
     pub batch_size: i32,
@@ -15,14 +16,15 @@ pub struct MongoDBConnection<'a> {
 }
 
 #[async_trait::async_trait]
-pub trait Connect<'a> {
+pub trait Operation<'a> {
     async fn new(uri: &str, database: &'a str, collection: &'a str) -> Self;
     async fn change_collection(&mut self, collection: &'a str);
-    async fn insert_many(&self, document: Vec<bson::Document>) -> InsertManyResult;
+    async fn insert_many(&self, document: Vec<Document>) -> InsertManyResult;
+    async fn update_last_id(&self, last_id: ObjectId) -> ObjectId;
 }
 
 #[async_trait::async_trait]
-impl<'a> Connect<'a> for MongoDBConnection<'a> {
+impl<'a> Operation<'a> for MongoDBConnection<'a> {
     async fn new(uri: &str, database: &'a str, collection: &'a str) -> Self {
         let connection = mongodb::Client::with_uri_str(uri).await.unwrap();
         Self {
@@ -36,11 +38,31 @@ impl<'a> Connect<'a> for MongoDBConnection<'a> {
         self.collection = collection;
     }
 
-    async fn insert_many(&self, document: Vec<bson::Document>) -> InsertManyResult {
+    async fn insert_many(&self, document: Vec<Document>) -> InsertManyResult {
         let collection = self
             .connection
             .database(self.database)
-            .collection::<bson::Document>(self.collection);
+            .collection::<Document>(self.collection);
         collection.insert_many(document, None).await.unwrap()
+    }
+
+    async fn update_last_id(&self, last_id: Option<ObjectId>) -> ObjectId {
+        let last_id = if last_id.is_none() {
+            let bytes = [0; 12];
+            ObjectId::from_bytes(bytes)
+        } else {
+            last_id.unwrap()
+        };
+
+        let exported_last = doc ! {
+            "collection": self.collection,
+            "last_id": last_id,
+            "updated_at": chrono::Utc::now(),
+        };
+
+        let collection_name = self.connection.database(self.database)
+            .collection::<Document>(self.collection);
+        collection_name.insert_one(exported_last, None).await.unwrap();
+        last_id
     }
 }
