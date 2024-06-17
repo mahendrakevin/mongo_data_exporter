@@ -1,17 +1,16 @@
-use mongodb::bson;
-use mongo_data_exporter::{MongoDBConnection, Operation};
+use mongo_data_exporter::{
+    export::Export,
+    operations::{MongoDBConnection, Operation},
+};
 
 #[tokio::main]
 async fn main() {
-    let mut connection = MongoDBConnection::new(
-        "mongodb://192.168.180.125:27017",
-        "log_check",
-        "test_mongo_exporter",
-    )
-    .await;
-    connection.change_collection("test_mongo_exporter2").await;
-    let res = connection
-        .insert_many(vec![bson::doc! { "name": "John Doe" }])
-        .await;
-    println!("{:?}", res);
+    // Example
+    let source_db =
+        MongoDBConnection::new("mongodb://localhost/test", "test", "transactions").await;
+    let target_db =
+        MongoDBConnection::new("mongodb://localhost2/test", "test", "transactions").await;
+    let mut export = Export::init(source_db, target_db, 1000, Some(1000)).await;
+    let res = export.start_export().await;
+    println!("Total data inserted: {:?}", res)
 }
