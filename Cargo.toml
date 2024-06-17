@@ -6,6 +6,7 @@ authors = ["Kevin Indra Mahendra"]
 license = "MIT"
 repository = "https://github.com/mahendrakevin/mongo_data_exporter"
 description = "A simple MongoDB data exporter to another MongoDB instance"
+readme = "README.md"
 
 [dependencies]
 async-trait = "0.1.80"
