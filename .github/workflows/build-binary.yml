@@ -64,26 +64,3 @@ jobs:
         with:
           name: binaries_mac
           path: bin/
-
-  commit_binaries:
-
-    needs: [ build_linux_windows, build_mac ]
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Print contents
-        run: ls -l
-
-      - uses: actions/checkout@v2
-      - name: Commit binaries
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          if [ -d "bin" ] && [ "$(ls -A bin)" ]; then
-            git add bin/*
-            git commit -m "Add binaries to bin folder" -a
-            git push
-          else
-            echo "No binaries to commit"
-          fi
