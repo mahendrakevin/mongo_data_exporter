@@ -10,7 +10,7 @@
 [![crates.io](https://img.shields.io/crates/v/mongo_data_exporter?label=latest)](https://crates.io/crates/mongo_data_exporter)
 [![Documentation](https://docs.rs/mongo_data_exporter/badge.svg?version=0.1.2)](https://docs.rs/mongo_data_exporter/0.1.2)
 ![MSRV](https://img.shields.io/badge/rustc-1.72+-ab6000.svg)
-[![Dependency Status](https://deps.rs/crate/actix-web/4.7.0/status.svg)](https://deps.rs/crate/mongo_data_exporter/0.1.2)
+[![dependency status](https://deps.rs/crate/mongo_data_exporter/0.1.2/status.svg)](https://deps.rs/crate/mongo_data_exporter/0.1.2)
 <br />
 ![MIT or Apache 2.0 licensed](https://img.shields.io/crates/l/mongo_data_exporter.svg)
 [![CI](https://github.com/mahendrakevin/mongo_data_exporter/actions/workflows/build-binary.yml/badge.svg)](https://github.com/mahendrakevin/mongo_data_exporter/actions/workflows/build-binary.yml)
